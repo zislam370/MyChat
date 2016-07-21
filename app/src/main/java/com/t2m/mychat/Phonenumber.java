@@ -159,6 +159,7 @@ public class Phonenumber extends AppCompatActivity {
         Databaseconn databaseconn = new Databaseconn(this);
         databaseconn.execute(method,phone,code_gen,device_id,user_ip,active_date);
         finish();
+
         Intent intent = new Intent(getApplicationContext(), Verify_code.class);
         startActivity(intent);
 
