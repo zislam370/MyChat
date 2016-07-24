@@ -22,23 +22,20 @@ public class Verify_code extends AppCompatActivity {
     }
 
 
-    public void verifyCode(View v)
-    {
+    public void verifyCode(View v) {
 
         phone_varify = phone_num_varify.getText().toString();
 
         String method = "login";
         Databaseconn databaseconn = new Databaseconn(this);
-        databaseconn.execute(method,phone_varify);
+        databaseconn.execute(method, phone_varify);
         finish();
 
 
-        Intent intent = new Intent(getApplicationContext(), profile.class);
-        startActivity(intent);
-
+            Intent intent = new Intent(getApplicationContext(), profile.class);
+            startActivity(intent);
 
 
 
     }
-
 }
