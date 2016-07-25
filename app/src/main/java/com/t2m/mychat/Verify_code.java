@@ -29,11 +29,11 @@ public class Verify_code extends AppCompatActivity {
         String method = "login";
         Databaseconn databaseconn = new Databaseconn(this);
         databaseconn.execute(method, phone_varify);
-        finish();
+        //finish();
 
 
-            Intent intent = new Intent(getApplicationContext(), profile.class);
-            startActivity(intent);
+            //Intent intent = new Intent(getApplicationContext(), profile.class);
+            //startActivity(intent);
 
 
 

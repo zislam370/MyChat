@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -118,15 +119,29 @@ public class Databaseconn extends AsyncTask<String,Void,String> {
     protected void onPostExecute(String result) {
 
 
-//        if(result.equals("Registration Success..."))
-//        {
-//           Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
-//
-//       }
-//      else
-//       {
-//           alertDialog.setMessage(result);
-//            alertDialog.show();
-//        }
+        if(result.equals("Registration Success..."))
+        {
+           Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+
+       }
+      else
+       {
+           alertDialog.setMessage(result);
+            alertDialog.show();
+          // alertDialog.hide();
+
+           if (result.equals("Wrong code")){
+               Toast.makeText(ctx, "activity", Toast.LENGTH_LONG).show();
+           }
+
+else {
+               Intent intent = new Intent(ctx, profile.class);
+               Log.d(toString(), "intent = " + intent.toString());
+               ctx.startActivity(intent);
+
+
+           }
+
+        }
     }
 }
