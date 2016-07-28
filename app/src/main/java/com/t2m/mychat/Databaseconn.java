@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -18,25 +19,28 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+
 /**
  * Created by prabeesh on 7/14/2015.
  */
-public class Databaseconn extends AsyncTask<String,Void,String> {
+public class Databaseconn extends AsyncTask<String, Void, String> {
     AlertDialog alertDialog;
     Context ctx;
-    Databaseconn(Context ctx)
-    {
-        this.ctx =ctx;
+
+    Databaseconn(Context ctx) {
+        this.ctx = ctx;
     }
+
     @Override
     protected void onPreExecute() {
         alertDialog = new AlertDialog.Builder(ctx).create();
         alertDialog.setTitle("Login Information....");
     }
+
     @Override
     protected String doInBackground(String... params) {
-        String reg_url = "http://192.168.1.118/MyChat/testMongo.php";
-        String login_url = "http://192.168.1.118/MyChat/loginMongo.php";
+        String reg_url = "http://192.168.1.118/MyChat_API/testMongo.php";
+        String login_url = "http://192.168.1.118/MyChat_API/loginMongo.php";
         String method = params[0];
         if (method.equals("register")) {
             String phone = params[1];
@@ -53,11 +57,11 @@ public class Databaseconn extends AsyncTask<String,Void,String> {
                 //httpURLConnection.setDoInput(true);
                 OutputStream OS = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
-                String data = URLEncoder.encode("phone", "UTF-8") + "=" + URLEncoder.encode(phone, "UTF-8")+"&"+
-                        URLEncoder.encode("code_gen","UTF-8")+"="+URLEncoder.encode(code_gen,"UTF-8")+"&"+
-                        URLEncoder.encode("device_id","UTF-8")+"="+URLEncoder.encode(device_id,"UTF-8")+"&"+
-                        URLEncoder.encode("user_ip","UTF-8")+"="+URLEncoder.encode(user_ip,"UTF-8")+"&"+
-                        URLEncoder.encode("active_date","UTF-8")+"="+URLEncoder.encode(active_date,"UTF-8");
+                String data = URLEncoder.encode("phone", "UTF-8") + "=" + URLEncoder.encode(phone, "UTF-8") + "&" +
+                        URLEncoder.encode("code_gen", "UTF-8") + "=" + URLEncoder.encode(code_gen, "UTF-8") + "&" +
+                        URLEncoder.encode("device_id", "UTF-8") + "=" + URLEncoder.encode(device_id, "UTF-8") + "&" +
+                        URLEncoder.encode("user_ip", "UTF-8") + "=" + URLEncoder.encode(user_ip, "UTF-8") + "&" +
+                        URLEncoder.encode("active_date", "UTF-8") + "=" + URLEncoder.encode(active_date, "UTF-8");
 
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
@@ -73,31 +77,28 @@ public class Databaseconn extends AsyncTask<String,Void,String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        else if(method.equals("login"))
-        {
-            String code_verify= params[1];
+        } else if (method.equals("login")) {
+            String code_verify = params[1];
 
             try {
                 URL url = new URL(login_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream,"UTF-8"));
-                String data = URLEncoder.encode("verify_code","UTF-8")+"="+URLEncoder.encode(code_verify,"UTF-8");
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String data = URLEncoder.encode("verify_code", "UTF-8") + "=" + URLEncoder.encode(code_verify, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();
                 outputStream.close();
                 InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
                 String response = "";
                 String line = "";
-                while ((line = bufferedReader.readLine())!=null)
-                {
-                    response+= line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    response += line;
                 }
                 bufferedReader.close();
                 inputStream.close();
@@ -111,36 +112,33 @@ public class Databaseconn extends AsyncTask<String,Void,String> {
         }
         return null;
     }
+
     @Override
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
     }
+
     @Override
     protected void onPostExecute(String result) {
 
 
-        if(result.equals("Registration Success..."))
-        {
-           Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
+        if (result.equals("Registration Success...")) {
+            Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();
 
-       }
-      else
-       {
-           alertDialog.setMessage(result);
+        } else {
+            alertDialog.setMessage(result);
             alertDialog.show();
-          // alertDialog.hide();
+            // alertDialog.hide();
 
-           if (result.equals("Wrong code")){
-               Toast.makeText(ctx, "activity", Toast.LENGTH_LONG).show();
-           }
-
-else {
-               Intent intent = new Intent(ctx, profile.class);
-               Log.d(toString(), "intent = " + intent.toString());
-               ctx.startActivity(intent);
+            if (result.equals("Wrong code")) {
+                Toast.makeText(ctx, "activity", Toast.LENGTH_LONG).show();
+            }  else {
+                Intent intent = new Intent(ctx, profile.class);
+                Log.d(toString(), "intent = " + intent.toString());
+                ctx.startActivity(intent);
 
 
-           }
+            }
 
         }
     }
